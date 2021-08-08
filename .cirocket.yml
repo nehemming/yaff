@@ -1,0 +1,22 @@
+name: "release the project"
+version: '1.0'
+
+includes:
+  - url: https://raw.githubusercontent.com/nehemming/cirocket-config/master/build/stdbuild.yml
+
+params:
+  - name: projectName
+    value: '{{- or .projectName .Env.CIRCLE_PROJECT_REPONAME "lpax"}}'
+    print: true
+    
+  - name: build_skip
+    value: 'true'
+
+  - name: builtBy
+    value: '{{- or .builtBy .Runtime.UserName }}'
+    print: true
+  - name: repoUser
+    value: '{{- or .repoUser .Env.CIRCLE_PROJECT_USERNAME "nehemming"}}'
+    print: true
+  - name: license
+    value: 'Apache 2.0'
