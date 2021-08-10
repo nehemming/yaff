@@ -159,6 +159,9 @@ func (tablet *tabular) write(out io.Writer, style TableStyle, excludeHeader bool
 	case Grid:
 		return tablet.writeAligned(out, excludeHeader, true, 1, terminalWidth)
 
+	case Markdown:
+		return tablet.writeMarkdown(out)
+
 	default:
 		return lpax.Errorf(langpack.ErrorUnknownStyle, style)
 	}
@@ -350,6 +353,75 @@ func (tablet *tabular) writePlain(out io.Writer, excludeHeader bool, columnSepar
 		}
 	}
 
+	return nil
+}
+
+func (tablet *tabular) writeMarkdown(out io.Writer) error {
+	// basic raw output, using a separator between columns
+
+	if err := tablet.writeMarkdownHeader(out); err != nil {
+		return err
+	}
+
+	for _, row := range tablet.rows {
+		if err := tablet.writeMarkdownRow(out, row); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (tablet *tabular) writeMarkdownHeader(out io.Writer) error {
+	if len(tablet.columns) == 0 {
+		return nil
+	}
+
+	// add fin line return
+	//nolint:errcheck
+	defer out.Write([]byte("\n"))
+
+	for _, col := range tablet.columns {
+		_, err := out.Write([]byte("|" + col.name))
+		if err != nil {
+			return err
+		}
+	}
+	_, err := out.Write([]byte("|\n"))
+	if err != nil {
+		return err
+	}
+	_, err = out.Write([]byte(strings.Repeat("|-", len(tablet.columns))))
+	if err != nil {
+		return err
+	}
+	_, err = out.Write([]byte("|"))
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (tablet *tabular) writeMarkdownRow(out io.Writer, row []string) error {
+	if len(row) == 0 {
+		return nil
+	}
+
+	// add in line return on completion / error
+	//nolint:errcheck
+	defer out.Write([]byte("\n"))
+
+	for _, field := range row {
+		_, err := out.Write([]byte("|" + field))
+		if err != nil {
+			return err
+		}
+	}
+
+	_, err := out.Write([]byte("|"))
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

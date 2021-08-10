@@ -84,10 +84,10 @@ const (
 
 var languagePack = lpax.TextMap{
 
-	FlagsReportingFormat:            "output format (csv|json|yaml|text). Default is text.",
-	FlagsReportingStyle:             "output style (plain|grid|aligned) Default for text is aligned",
+	FlagsReportingFormat:            "output format (csv|json|yaml|text). Default is text",
+	FlagsReportingStyle:             "output style (plain|grid|aligned|md) Default for text is aligned",
 	FlagsReportingTemplate:          "template string to use for text output. Uses Go templating syntax",
-	FlagsReportingTemplateFile:      "template file path. File must ne in GO templating syntax ",
+	FlagsReportingTemplateFile:      "template file path. File must ne in GO templating syntax",
 	FlagsReportingIndent:            "indenting to use with JSON formating, 0 for single line output",
 	FlagsReportingInclude:           "columns to output",
 	FlagsReportingExclude:           "columns to exclude from output",

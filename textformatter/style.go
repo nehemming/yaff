@@ -33,6 +33,9 @@ const (
 
 	// Grid surrounding.
 	Grid
+
+	// Markdown uses a markdown table format.
+	Markdown
 )
 
 // GetTextStyleFromString get the text style for a string.
@@ -40,12 +43,12 @@ func GetTextStyleFromString(style string) (TableStyle, error) {
 	switch style {
 	case "plain":
 		return Plain, nil
-	case "":
-		fallthrough
-	case "aligned":
+	case "", "aligned":
 		return Aligned, nil
 	case "grid":
 		return Grid, nil
+	case "md":
+		return Markdown, nil
 	default:
 		return Plain, lpax.Errorf(langpack.ErrorUnknownStyle, style)
 	}

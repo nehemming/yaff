@@ -233,6 +233,43 @@ today
 	testsupport.CompareStrings(t, expected, got)
 }
 
+func TestNewFormatterMarkdown(t *testing.T) {
+	fmt, err := NewFormatter()
+	if err != nil {
+		t.Errorf("Error %v", err)
+	}
+
+	if fmt == nil {
+		t.Error("No formatter")
+	}
+
+	// Generate some output
+	var buf bytes.Buffer
+
+	options := NewOptions()
+
+	options.Style = Markdown
+	options.ExcludeSet["I"] = true
+
+	err = fmt.Format(&buf, options, []testData{
+		{S: "Hello", I: 10, F: 3.14, N: innerData{Sin: "Inside"}},
+		{S: "Bye", I: 32, F: 2.77, N: innerData{Sin: "Outside"}},
+	})
+
+	if err != nil {
+		t.Errorf("Formatter Error %v", err)
+	}
+
+	expected := `|S|F|Sun|
+|-|-|-|
+|Hello|3.14|Inside|
+|Bye|2.77|Outside|
+`
+	got := buf.String()
+
+	testsupport.CompareStrings(t, expected, got)
+}
+
 func TestNewFormatterBadStyle(t *testing.T) {
 	fmt, err := NewFormatter()
 	if err != nil {
