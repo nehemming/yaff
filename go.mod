@@ -10,6 +10,6 @@ require (
 	github.com/nehemming/testsupport v0.0.0-20201206084157-e42fc749801f
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.8.1
-	golang.org/x/text v0.3.6
+	golang.org/x/text v0.3.8
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )
